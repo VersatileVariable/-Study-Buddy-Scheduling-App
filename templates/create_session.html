@@ -1,201 +1,35 @@
-<!-- templates/index.html -->
-{% extends "base.html" %}
-{% block title %}Home{% endblock %}
+    {% extends "base.html" %}
+
+{% block title %}Courses{% endblock %}
+
 {% block content %}
-<div class="row">
-    <div class="col-md-8 mx-auto text-center">
-        <div class="hero-section py-5">
-            <h1 class="display-4 mb-4">
-                <i class="fas fa-graduation-cap text-primary"></i>
-                Study Buddy
-            </h1>
-            <p class="lead mb-4">Connect with Clemson classmates and organize study sessions.</p>
-            
-            <div class="row mt-5">
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-users fa-3x text-primary mb-3"></i>
-                            <h5>Find Study Partners</h5>
-                            <p>Connect with classmates in your courses.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-calendar-alt fa-3x text-success mb-3"></i>
-                            <h5>Schedule Sessions</h5>
-                            <p>Organize study sessions with flexible scheduling.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-book fa-3x text-info mb-3"></i>
-                            <h5>Course Integration</h5>
-                            <p>Manage all your courses in one place.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-5">
-                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg me-3">
-                    <i class="fas fa-user-plus"></i> Get Started
-                </a>
-                <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg">
-                    <i class="fas fa-sign-in-alt"></i> Sign In
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-<!-- templates/login.html -->
-{% extends "base.html" %}
-{% block title %}Login{% endblock %}
-{% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h4><i class="fas fa-sign-in-alt"></i> Login to Study Buddy</h4>
-            </div>
-            <div class="card-body">
-                <form method="POST">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </button>
-                    </div>
-                </form>
-                <div class="text-center mt-3">
-                    <p>Don't have an account? <a href="{{ url_for('register') }}">Sign up here</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-<!-- templates/register.html -->
-{% extends "base.html" %}
-{% block title %}Register{% endblock %}
-{% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h4><i class="fas fa-user-plus"></i> Join Study Buddy</h4>
-            </div>
-            <div class="card-body">
-                <form method="POST">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-user-plus"></i> Create Account
-                        </button>
-                    </div>
-                </form>
-                <div class="text-center mt-3">
-                    <p>Already have an account? <a href="{{ url_for('login') }}">Sign in here</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-<!-- templates/dashboard.html -->
-{% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
-{% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Welcome back, {{ session.username }}!</h1>
-    <a href="{{ url_for('create_session') }}" class="btn btn-primary">
-        <i class="fas fa-plus"></i> Create Study Session
-    </a>
-</div>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h5><i class="fas fa-book text-primary"></i> Your Courses ({{ user_courses|length }})</h5>
-            </div>
-            <div class="card-body">
-                {% if user_courses %}
-                    {% for course in user_courses %}
-                    <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                        <div>
-                            <strong>{{ course.course_code }}</strong><br>
-                            <small class="text-muted">{{ course.course_name }}</small>
-                        </div>
-                        <span class="badge bg-secondary">{{ course.department }}</span>
-                    </div>
-                    {% endfor %}
-                    <div class="mt-3">
-                        <a href="{{ url_for('courses') }}" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-plus"></i> Manage Courses
-                        </a>
-                    </div>
-                {% else %}
-                    <div class="text-center py-4">
-                        <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">You haven't enrolled in any courses yet.</p>
-                        <a href="{{ url_for('courses') }}" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Browse Courses
-                        </a>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h5><i class="fas fa-calendar-alt text-success"></i> Upcoming Sessions</h5>
-            </div>
-            <div class="card-body">
-                {% if upcoming_sessions %}
-                    {% for session in upcoming_sessions %}
-                    <div class="card study-session-card mb-3">
+<div class="container mt-4">
+    <h2 class="mb-4">Available Courses</h2>
+    <div class="row">
+        {% if courses %}
+            {% for course in courses %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
                         <div class="card-body">
-                            <h6>{{ session.title }}</h6>
-                            <p class="card-text">
-                                <strong>{{ session.course_code }}</strong> - {{ session.course_name }}<br>
-                                <i class="fas fa-user"></i> {{ session.creator_name }}<br>
-                                <i class="fas fa-calendar"></i> {{ session.session_date }} at {{ session.session_time }}<br>
-                                <i class="fas fa-users"></i> {{ session.participant_count }}/{{ session.max_participants }} participants
-                            </p>
+                            <h5 class="card-title">{{ course.name }}</h5>
+                            <p class="card-text">{{ course.description }}</p>
+                            <a href="{{ url_for('course_sessions', course_id=course.id) }}" class="btn btn-primary">
+                                View Sessions
+                                </a>
                         </div>
                     </div>
-                    {% endfor %}
-                    <a href="{{ url_for('sessions') }}" class="btn btn-outline-success btn-sm">
-                        <i class="fas fa-eye"></i> View All Sessions
-                    </a>
-                {% else %}
-                    <div class
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-4">
+                <i class="fas fa-book fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No courses available.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+</div>
+            </div>
+        </div>
+        </div>
